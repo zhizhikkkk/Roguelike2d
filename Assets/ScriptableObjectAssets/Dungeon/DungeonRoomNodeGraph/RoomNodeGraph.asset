@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4151641007635266531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a3dc893c41af44da197e4eea96104d, type: 3}
+  m_Name: RoomNode
+  m_EditorClassIdentifier: 
+  id: 58da46d2-445d-4499-ace3-5920fa2387ab
+  parentRoomNodeID: 
+  childRoomNodeIDList: []
+  roomNodeGraph: {fileID: 11400000}
+  roomNodeType: {fileID: 11400000, guid: 32ecba6de97338a428ed40004fe61d1f, type: 2}
+  roomNodeTypeList: {fileID: 11400000, guid: 03d2c03d60cf29f4ab32d4b1cc5126fe, type: 2}
+  rect:
+    serializedVersion: 2
+    x: 547.3334
+    y: 148.66667
+    width: 160
+    height: 75
+--- !u!114 &-3391014796289704815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a3dc893c41af44da197e4eea96104d, type: 3}
+  m_Name: RoomNode
+  m_EditorClassIdentifier: 
+  id: 36d22155-a347-4948-94aa-39256a094ff7
+  parentRoomNodeID: 
+  childRoomNodeIDList: []
+  roomNodeGraph: {fileID: 11400000}
+  roomNodeType: {fileID: 11400000, guid: 32ecba6de97338a428ed40004fe61d1f, type: 2}
+  roomNodeTypeList: {fileID: 11400000, guid: 03d2c03d60cf29f4ab32d4b1cc5126fe, type: 2}
+  rect:
+    serializedVersion: 2
+    x: 380.6667
+    y: 199.33334
+    width: 160
+    height: 75
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556d2462587a14e408c5b93e32ca6c76, type: 3}
+  m_Name: RoomNodeGraph
+  m_EditorClassIdentifier: 
+  roomNodeTypeList: {fileID: 0}
+  roomNodeList:
+  - {fileID: -3391014796289704815}
+  - {fileID: -4151641007635266531}
