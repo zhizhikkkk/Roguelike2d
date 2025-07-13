@@ -24,6 +24,8 @@ public class RoomNodeGraphSO : ScriptableObject
         }
     }
 
+    public RoomNodeSO GetRoomNode(string id) => roomNodeDictionary.TryGetValue(id, out RoomNodeSO node) ? node : null;
+
     #region Editor Code
 #if UNITY_EDITOR
     [HideInInspector] public RoomNodeSO roomNodeToDrawLineFrom = null;

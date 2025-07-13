@@ -187,7 +187,7 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void ClearAllSelectedRoomNodes()
     {
-        foreach(RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
+        foreach (RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
         {
             if (roomNode.isSelected)
             {
