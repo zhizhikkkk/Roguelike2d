@@ -5,15 +5,18 @@ using UnityEditor.Callbacks;
 public class RoomNodeGraphEditor : EditorWindow
 {
     private GUIStyle roomNodeStyle;
+    private GUIStyle roomNodeSelectedStyle;
     private static RoomNodeGraphSO currentRoomNodeGraph;
     private RoomNodeSO currentRoomNode = null;
     private RoomNodeTypeListSO roomNodeTypeList;
 
+    //Node layout values
     private const float nodeWidth = 160f;
     private const float nodeHeight = 75f;
     private const int nodePadding = 25;
     private const int nodeBorder = 12;
 
+    //Connecting line values
     private const float connectongLineWidth = 3f;
     private const float connectingLineArrowSize = 6f;
 
@@ -26,14 +29,29 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void OnEnable()
     {
+        Selection.selectionChanged += InspectorSelectionChanged;
+
+
         roomNodeStyle = new GUIStyle();
-        roomNodeStyle.normal.background = EditorGUIUtility.Load("node1") as Texture2D;
+        roomNodeStyle.normal.background = EditorGUIUtility.Load("node2") as Texture2D;
         roomNodeStyle.normal.textColor = Color.white;
         roomNodeStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
         roomNodeStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
 
+        roomNodeSelectedStyle = new GUIStyle();
+        roomNodeSelectedStyle.normal.background = EditorGUIUtility.Load("node2 on") as Texture2D;
+        roomNodeSelectedStyle.normal.textColor = Color.black;
+        roomNodeSelectedStyle.padding = new RectOffset(nodePadding, nodePadding, nodePadding, nodePadding);
+        roomNodeSelectedStyle.border = new RectOffset(nodeBorder, nodeBorder, nodeBorder, nodeBorder);
+
         roomNodeTypeList = GameResources.Instance.roomNodeTypeList;
     }
+
+    private void OnDisable()
+    {
+        Selection.selectionChanged -= InspectorSelectionChanged;
+    }
+
     /// <summary>
     /// Open the room node graph editor window if a room node graph SO asset is double clicked in the inspector
     /// </summary>
@@ -128,6 +146,11 @@ public class RoomNodeGraphEditor : EditorWindow
         {
             ShowContextMenu(currentEvent.mousePosition);
         }
+        else if (currentEvent.button == 0)
+        {
+            ClearLineDrag();
+            ClearAllSelectedRoomNodes();
+        }
     }
     private void ShowContextMenu(Vector2 mousePosition)
     {
@@ -138,6 +161,11 @@ public class RoomNodeGraphEditor : EditorWindow
 
     private void CreateRoomNode(object mousePositionObject)
     {
+        if (currentRoomNodeGraph.roomNodeList.Count == 0)
+        {
+            CreateRoomNode(new Vector2(200f, 200f), roomNodeTypeList.list.Find(x => x.isEntrance));
+        }
+
         CreateRoomNode(mousePositionObject, roomNodeTypeList.list.Find(x => x.isNone));
     }
 
@@ -155,6 +183,19 @@ public class RoomNodeGraphEditor : EditorWindow
         AssetDatabase.SaveAssets();
 
         currentRoomNodeGraph.OnValidate();
+    }
+
+    private void ClearAllSelectedRoomNodes()
+    {
+        foreach(RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
+        {
+            if (roomNode.isSelected)
+            {
+                roomNode.isSelected = false;
+
+                GUI.changed = true;
+            }
+        }
     }
 
     private void ProcessMouseUpEvent(Event currentEvent)
@@ -235,10 +276,10 @@ public class RoomNodeGraphEditor : EditorWindow
         Vector2 arrowTailPoint2 = midPosition + new Vector2(-direction.y, direction.x).normalized * connectingLineArrowSize;
 
         Vector2 arrowHeadPoint = midPosition + direction.normalized * connectingLineArrowSize;
-        Handles.color = Color.magenta;                                  
-        Handles.DrawAAConvexPolygon(arrowHeadPoint, arrowTailPoint1,     
+        Handles.color = Color.magenta;
+        Handles.DrawAAConvexPolygon(arrowHeadPoint, arrowTailPoint1,
                                     arrowTailPoint2);
-       
+
         GUI.changed = true;
     }
 
@@ -247,8 +288,19 @@ public class RoomNodeGraphEditor : EditorWindow
     {
         foreach (RoomNodeSO roomNode in currentRoomNodeGraph.roomNodeList)
         {
-            roomNode.Draw(roomNodeStyle);
+            roomNode.Draw(roomNode.isSelected ? roomNodeSelectedStyle : roomNodeStyle);
         }
         GUI.changed = true;
+    }
+
+    private void InspectorSelectionChanged()
+    {
+        RoomNodeGraphSO roomNodeGraph = Selection.activeObject as RoomNodeGraphSO;
+
+        if (roomNodeGraph != null)
+        {
+            currentRoomNodeGraph = roomNodeGraph;
+            GUI.changed = true;
+        }
     }
 }

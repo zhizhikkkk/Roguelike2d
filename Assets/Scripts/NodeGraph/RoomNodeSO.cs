@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class RoomNodeSO : ScriptableObject 
+public class RoomNodeSO : ScriptableObject
 {
     [HideInInspector] public string id;
     [HideInInspector] public string parentRoomNodeID;
@@ -34,11 +34,17 @@ public class RoomNodeSO : ScriptableObject
         GUILayout.BeginArea(rect, nodeStyle);
         EditorGUI.BeginChangeCheck();
 
-        int selected = roomNodeTypeList.list.FindIndex(x => x == roomNodeType);
-        int selection = EditorGUILayout.Popup("", selected, GetRoomNodeTypesToDisplay());
+        if (parentRoomNodeID != null || roomNodeType.isEntrance)
+        {
+            EditorGUILayout.LabelField(roomNodeType.roomNodeTypeName);
+        }
+        else
+        {
+            int selected = roomNodeTypeList.list.FindIndex(x => x == roomNodeType);
+            int selection = EditorGUILayout.Popup("", selected, GetRoomNodeTypesToDisplay());
 
-        roomNodeType = roomNodeTypeList.list[selection];
-
+            roomNodeType = roomNodeTypeList.list[selection];
+        }
         if (EditorGUI.EndChangeCheck())
         {
             EditorUtility.SetDirty(this);
@@ -82,11 +88,11 @@ public class RoomNodeSO : ScriptableObject
 
     private void ProcessMouseDownEvent(Event currentEvent)
     {
-        if(currentEvent.button == 0)
+        if (currentEvent.button == 0)
         {
             ProcessLeftClickDownEvent();
         }
-        else if(currentEvent.button == 1)
+        else if (currentEvent.button == 1)
         {
             ProcessRightClickDownEvent(currentEvent);
         }
@@ -123,7 +129,7 @@ public class RoomNodeSO : ScriptableObject
     }
     private void ProcessLeftMouseDragEvent(Event currentEvent)
     {
-        
+
         isLeftClickDragging = true;
         DragNode(currentEvent.delta);
         GUI.changed = true;
